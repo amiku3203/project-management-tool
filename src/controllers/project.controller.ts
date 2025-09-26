@@ -1,0 +1,125 @@
+ import { Request, Response } from "express";
+import {
+  createProject,
+  getProjectsByUser,
+  getProjectById,
+  updateProject,
+  deleteProject,
+} from "../services/project.service";
+
+import { projectBodySchema, projectParamsSchema } from "../validators/project.validation";
+
+export const addProject = async (req: Request, res: Response) => {
+  try {
+     
+    const { error: bodyError } = projectBodySchema.validate(req.body, { abortEarly: false });
+    if (bodyError) {
+      return res.status(400).json({
+        message: "Validation error",
+        details: bodyError.details.map(d => d.message),
+      });
+    }
+
+    const { title, description, status } = req.body;
+    const userId = req.user!._id;
+
+    const project = await createProject(title, description, status ?? "Active", userId);
+    res.status(201).json({ project });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getAllProjects = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user!._id;
+    const projects = await getProjectsByUser(userId);
+    res.status(200).json({ projects });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getSingleProject = async (req: Request, res: Response) => {
+  try {
+    
+    const { error: paramError } = projectParamsSchema.validate(req.params);
+    if (paramError) {
+      return res.status(400).json({
+        message: "Invalid project ID",
+        details: paramError.details.map(d => d.message),
+      });
+    }
+
+    const projectId = req.params.projectId as string;
+    const userId = req.user!._id;
+
+    const project = await getProjectById(projectId, userId);
+    if (!project) return res.status(404).json({ message: "Project not found" });
+
+    res.status(200).json({ project });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const editProject = async (req: Request, res: Response) => {
+  try {
+    
+    const { error: paramError } = projectParamsSchema.validate(req.params);
+    if (paramError) {
+      return res.status(400).json({
+        message: "Invalid project ID",
+        details: paramError.details.map(d => d.message),
+      });
+    }
+
+  
+    const { error: bodyError } = projectBodySchema.validate(req.body, { abortEarly: false });
+    if (bodyError) {
+      return res.status(400).json({
+        message: "Validation error",
+        details: bodyError.details.map(d => d.message),
+      });
+    }
+
+    const projectId = req.params.projectId as string;
+    const userId = req.user!._id;
+    const updateData = req.body;
+
+    const project = await updateProject(projectId, userId, updateData);
+    if (!project) return res.status(404).json({ message: "Project not found" });
+
+    res.status(200).json({ project });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const removeProject = async (req: Request, res: Response) => {
+  try {
+    // Validate params
+    const { error: paramError } = projectParamsSchema.validate(req.params);
+    if (paramError) {
+      return res.status(400).json({
+        message: "Invalid project ID",
+        details: paramError.details.map(d => d.message),
+      });
+    }
+
+    const projectId = req.params.projectId as string;
+    const userId = req.user!._id;
+
+    const project = await deleteProject(projectId, userId);
+    if (!project) return res.status(404).json({ message: "Project not found" });
+
+    res.status(200).json({ message: "Project deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
