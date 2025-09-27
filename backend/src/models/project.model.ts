@@ -27,7 +27,7 @@ const projectSchema = new mongoose.Schema<IProject>({
     ref: "User",
   },
   
-});
+},{timestamps:true});
 
 const Project = mongoose.model<IProject>("Project", projectSchema);
 
