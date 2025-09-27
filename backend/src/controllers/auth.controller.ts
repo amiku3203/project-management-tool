@@ -37,7 +37,7 @@ export const login = async (req: Request, res: Response) => {
 
     const { email, password } = req.body;
     const { user, token } = await loginUser(email, password);
-
+   
     res.status(200).json({ message: "Login successful", user, token });
   } catch (err: any) {
     res.status(401).json({ message: err.message || "Server error" });
