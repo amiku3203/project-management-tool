@@ -1,4 +1,5 @@
- import { Request, Response } from "express";
+import { Request, Response } from "express";
+import { ObjectId } from "mongodb";
 import {
   createProject,
   getProjectsByUser,
@@ -7,23 +8,32 @@ import {
   deleteProject,
 } from "../services/project.service";
 
-import { projectBodySchema, projectParamsSchema } from "../validators/project.validation";
+import {
+  projectBodySchema,
+  projectParamsSchema,
+} from "../validations/project.validation";
 
 export const addProject = async (req: Request, res: Response) => {
   try {
-     
-    const { error: bodyError } = projectBodySchema.validate(req.body, { abortEarly: false });
+    const { error: bodyError } = projectBodySchema.validate(req.body, {
+      abortEarly: false,
+    });
     if (bodyError) {
       return res.status(400).json({
         message: "Validation error",
-        details: bodyError.details.map(d => d.message),
+        details: bodyError.details.map((d) => d.message),
       });
     }
 
     const { title, description, status } = req.body;
-    const userId = req.user!._id;
+    const userId = req.user!._id as ObjectId;
 
-    const project = await createProject(title, description, status ?? "Active", userId);
+    const project = await createProject(
+      title,
+      description,
+      status ?? "Active",
+      userId
+    );
     res.status(201).json({ project });
   } catch (err) {
     console.error(err);
@@ -33,7 +43,7 @@ export const addProject = async (req: Request, res: Response) => {
 
 export const getAllProjects = async (req: Request, res: Response) => {
   try {
-    const userId = req.user!._id;
+    const userId = req.user!._id as ObjectId;
     const projects = await getProjectsByUser(userId);
     res.status(200).json({ projects });
   } catch (err) {
@@ -44,17 +54,16 @@ export const getAllProjects = async (req: Request, res: Response) => {
 
 export const getSingleProject = async (req: Request, res: Response) => {
   try {
-    
     const { error: paramError } = projectParamsSchema.validate(req.params);
     if (paramError) {
       return res.status(400).json({
         message: "Invalid project ID",
-        details: paramError.details.map(d => d.message),
+        details: paramError.details.map((d) => d.message),
       });
     }
 
     const projectId = req.params.projectId as string;
-    const userId = req.user!._id;
+    const userId = req.user!._id as ObjectId;
 
     const project = await getProjectById(projectId, userId);
     if (!project) return res.status(404).json({ message: "Project not found" });
@@ -68,26 +77,26 @@ export const getSingleProject = async (req: Request, res: Response) => {
 
 export const editProject = async (req: Request, res: Response) => {
   try {
-    
     const { error: paramError } = projectParamsSchema.validate(req.params);
     if (paramError) {
       return res.status(400).json({
         message: "Invalid project ID",
-        details: paramError.details.map(d => d.message),
+        details: paramError.details.map((d) => d.message),
       });
     }
 
-  
-    const { error: bodyError } = projectBodySchema.validate(req.body, { abortEarly: false });
+    const { error: bodyError } = projectBodySchema.validate(req.body, {
+      abortEarly: false,
+    });
     if (bodyError) {
       return res.status(400).json({
         message: "Validation error",
-        details: bodyError.details.map(d => d.message),
+        details: bodyError.details.map((d) => d.message),
       });
     }
 
     const projectId = req.params.projectId as string;
-    const userId = req.user!._id;
+    const userId = req.user!._id as ObjectId;
     const updateData = req.body;
 
     const project = await updateProject(projectId, userId, updateData);
@@ -107,12 +116,12 @@ export const removeProject = async (req: Request, res: Response) => {
     if (paramError) {
       return res.status(400).json({
         message: "Invalid project ID",
-        details: paramError.details.map(d => d.message),
+        details: paramError.details.map((d) => d.message),
       });
     }
 
     const projectId = req.params.projectId as string;
-    const userId = req.user!._id;
+    const userId = req.user!._id as ObjectId;
 
     const project = await deleteProject(projectId, userId);
     if (!project) return res.status(404).json({ message: "Project not found" });

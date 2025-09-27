@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export interface IProject {
   title: string;
   description: string;
-  status: string;
+  status: "Active" | "Completed";
   userId: mongoose.Types.ObjectId;
 }
 
@@ -26,6 +26,7 @@ const projectSchema = new mongoose.Schema<IProject>({
     type: mongoose.Schema.ObjectId,
     ref: "User",
   },
+  
 });
 
 const Project = mongoose.model<IProject>("Project", projectSchema);
