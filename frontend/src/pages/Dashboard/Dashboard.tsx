@@ -23,17 +23,17 @@ const Dashboard: React.FC = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
 
-  // Debounced search effect
+  
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       dispatch(setSearchQuery(localSearchQuery));
-    }, 500); // 500ms debounce
+    }, 500); 
 
     return () => clearTimeout(timeoutId);
   }, [localSearchQuery, dispatch]);
 
   useEffect(() => {
-    // Reset to page 1 when search query changes, or load initial data
+    
     dispatch(fetchProjects({ page: 1, limit: 6, search: searchQuery }));
   }, [dispatch, searchQuery]);
 
@@ -61,7 +61,7 @@ const Dashboard: React.FC = () => {
         await dispatch(deleteProject(projectId));
         toast.success("Project deleted successfully!");
 
-        // If we're on the last page and it only has 1 item, go to previous page
+        
         const shouldGoToPreviousPage =
           pagination.currentPage > 1 &&
           projects.length === 1 &&
@@ -71,7 +71,7 @@ const Dashboard: React.FC = () => {
           ? pagination.currentPage - 1
           : pagination.currentPage;
 
-        // Refresh the projects list
+        
         dispatch(
           fetchProjects({
             page: targetPage,
@@ -92,7 +92,7 @@ const Dashboard: React.FC = () => {
       await dispatch(createProject(data));
       toast.success("Project created successfully!");
       setShowCreateModal(false);
-      // Refresh the projects list
+      
       dispatch(fetchProjects({ page: 1, limit: 6, search: searchQuery }));
     } catch (error: any) {
       toast.error("Failed to create project. Please try again.");
@@ -113,24 +113,36 @@ const Dashboard: React.FC = () => {
     <div className="min-h-screen bg-[url('/assets/image.png')] bg-cover bg-center ">
       <nav className="bg-gray-800 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+          <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-white">
-                Project Management Dashboard
+              <h1 className="text-lg sm:text-xl font-semibold text-white truncate">
+                <span className="hidden sm:inline">Project Management Dashboard</span>
+                <span className="sm:hidden">PM Dashboard</span>
               </h1>
             </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-300">Welcome, {user?.email}</span>
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <span className="text-gray-300 text-sm hidden sm:inline">
+                Welcome, {user?.name || user?.email}
+              </span>
+              <span className="text-gray-300 text-sm sm:hidden">
+                {user?.name || user?.email?.split('@')[0]}
+              </span>
               <button
                 onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200"
+                className="bg-red-600 hover:bg-red-700 text-white px-2 py-1 sm:px-4 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition duration-200"
               >
-                Logout
+                <span className="hidden sm:inline">Logout</span>
+                <span className="sm:hidden">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                </span>
               </button>
             </div>
           </div>
         </div>
       </nav>
+
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
@@ -318,25 +330,25 @@ const Dashboard: React.FC = () => {
                       const showEllipsis = totalPages > 7;
 
                       if (!showEllipsis) {
-                        // Show all pages if 7 or fewer
+                        
                         for (let i = 1; i <= totalPages; i++) {
                           pages.push(i);
                         }
                       } else {
-                        // Show first page, current page area, and last page with ellipsis
+                        
                         if (currentPage <= 4) {
-                          // Near the beginning
+                          
                           for (let i = 1; i <= 5; i++) pages.push(i);
                           pages.push("...");
                           pages.push(totalPages);
                         } else if (currentPage >= totalPages - 3) {
-                          // Near the end
+                          
                           pages.push(1);
                           pages.push("...");
                           for (let i = totalPages - 4; i <= totalPages; i++)
                             pages.push(i);
                         } else {
-                          // In the middle
+                          
                           pages.push(1);
                           pages.push("...");
                           for (

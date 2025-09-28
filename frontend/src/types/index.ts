@@ -13,6 +13,7 @@ export interface User {
   id: string;
   email: string;
   token: string;
+  name:string;
 }
 
 export interface SignupFormData extends LoginFormData {
