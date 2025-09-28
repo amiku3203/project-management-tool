@@ -148,19 +148,7 @@ To populate your database with sample data:
    Password:  Test@123
    ```
 
-## Deployment
-
-### Backend Deployment
-The backend can be deployed on platforms like:
-- Render: Connect your GitHub repo and deploy
-- Railway: Simple deployment with MongoDB addon
-- Heroku: Classic platform with MongoDB Atlas
-
-### Frontend Deployment
-The frontend is deployed on Vercel:
-- Automatic deployments from GitHub
-- Environment variables configured in Vercel dashboard
-- Custom domain support
+ 
 
 ## Project Structure
 
@@ -224,17 +212,5 @@ project-management-tool/
 6. Time Tracking: No built-in time tracking for tasks
 7. Comments: No commenting system for tasks or projects
 8. Drag & Drop: No drag-and-drop interface for task management
-
-## Future Enhancements
-
-- Real-time collaboration with Socket.io
-- Team member management and permissions
-- File attachment support
-- Advanced search and filtering
-- Email notifications for due dates
-- Time tracking and reporting
-- Kanban board view
-- Mobile application
-- Integration with external tools (Slack, GitHub, etc.)
 
  
