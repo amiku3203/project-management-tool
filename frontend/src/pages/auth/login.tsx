@@ -12,6 +12,7 @@ import {
   loginFailure,
 } from "../../redux/slices/authSlice";
 import axiosInstance from "../../utils/axios";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const {
@@ -51,7 +52,7 @@ const Login = () => {
 
         const updatedUser: User = { ...userData, token };
         dispatch(loginSuccess(updatedUser));
-
+        toast.success("Login SuccessFully")
         const from = (location.state as any)?.from?.pathname || "/dashboard";
         navigate(from, { replace: true });
       } catch (err: any) {
@@ -59,13 +60,14 @@ const Login = () => {
         const errorMessage =
           err?.response?.data?.message || err?.message || "Login failed";
         dispatch(loginFailure(errorMessage));
+        toast.error("Login SuccessFully")
       }
     },
     [dispatch, navigate, location]
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 bg-[url('/assets/bg3.png')] bg-cover bg-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 bg-[url('/assets/image.png')] bg-cover bg-center">
       <div className="bg-transparent border-2 border-white p-6 sm:p-8 rounded-lg shadow-2xl max-w-sm sm:max-w-md w-full mx-4">
         <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-white">
           Login to Manage Your Tasks
@@ -79,7 +81,7 @@ const Login = () => {
             <input
               type="email"
               {...register("email")}
-              className="w-full px-3 py-2 border-2 border-white-300 rounded-md focus:outline-none focus:border-white-400 bg-gray-700 text-white font-semibold placeholder-gray-400"
+              className="w-full px-3 py-2 border-2 border-white rounded-md focus:outline-none focus:border-white-400  font-semibold bg-white text-gray-500 placeholder-gray-400"
               placeholder="Enter your email"
             />
             {errors.email && (
@@ -93,7 +95,7 @@ const Login = () => {
             <input
               type="password"
               {...register("password")}
-              className="w-full px-3 py-2 border-2 border-white-300 rounded-md focus:outline-none focus:border-white-400 bg-gray-700 text-white placeholder-gray-400"
+              className="w-full px-3 py-2 border-2 border-white rounded-md focus:outline-none focus:border-white-400 bg-white text-gray-500 placeholder-gray-400"
               placeholder="Enter your password"
             />
             {errors.password && (

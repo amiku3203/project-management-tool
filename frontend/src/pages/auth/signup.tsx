@@ -2,7 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import {  signupSchema } from "../../validations/authSchema";
+import { signupSchema } from "../../validations/authSchema";
 import type { SignupFormData, User } from "../../types";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../redux/store";
@@ -12,6 +12,7 @@ import {
   signupFailure,
 } from "../../redux/slices/authSlice";
 import axiosInstance from "../../utils/axios";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const {
@@ -37,7 +38,7 @@ const SignUp = () => {
   }, [user, navigate, location]);
 
   const onSubmit = useCallback(
-    async (data:SignupFormData) => {
+    async (data: SignupFormData) => {
       dispatch(signupRequest());
       try {
         const response = await axiosInstance.post<{
@@ -45,19 +46,20 @@ const SignUp = () => {
           user: User;
           token: string;
         }>("/auth/register", data);
-
+        toast.success("Signup Successfully!")
         dispatch(signupSuccess());
-
+      
         navigate("/login");
       } catch (err: any) {
         dispatch(signupFailure(err.message || "Signup failed"));
+        toast.error("Signup Failed");
       }
     },
     [dispatch, navigate, location]
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 bg-[url('/assets/bg3.png')] bg-cover bg-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900 bg-[url('/assets/image.png')] bg-cover bg-center">
       <div className="bg-transparent border-2 border-white p-6 sm:p-8 rounded-lg shadow-2xl max-w-sm sm:max-w-md w-full mx-4">
         <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center text-white">
           Signup to Manage Your Tasks
@@ -71,7 +73,7 @@ const SignUp = () => {
             <input
               type="text"
               {...register("name")}
-              className="w-full px-3 py-2 border-2 border-white-300 rounded-md focus:outline-none focus:border-white-400 bg-gray-700 text-white font-semibold placeholder-gray-400"
+              className="w-full px-3 py-2 border-2 border-white rounded-md focus:outline-none focus:border-white-400  font-semibold placehold bg-white text-gray-500er-gray-400"
               placeholder="Enter your  name"
             />
             {errors.name && (
@@ -82,7 +84,7 @@ const SignUp = () => {
             <input
               type="email"
               {...register("email")}
-              className="w-full px-3 py-2 border-2 border-white-300 rounded-md focus:outline-none focus:border-white-400 bg-gray-700 text-white font-semibold placeholder-gray-400"
+              className="w-full px-3 py-2 border-2 border-white rounded-md focus:outline-none focus:border-white-400   bg-white text-gray-500 font-semibold placeholder-gray-400"
               placeholder="Enter your email"
             />
             {errors.email && (
@@ -96,7 +98,7 @@ const SignUp = () => {
             <input
               type="password"
               {...register("password")}
-              className="w-full px-3 py-2 border-2 border-white-300 rounded-md focus:outline-none focus:border-white-400 bg-gray-700 text-white placeholder-gray-400"
+              className="w-full px-3 py-2 border-2 border-white rounded-md focus:outline-none focus:border-white-400   bg-white text-gray-500 placeholder-gray-400"
               placeholder="Enter your password"
             />
             {errors.password && (
