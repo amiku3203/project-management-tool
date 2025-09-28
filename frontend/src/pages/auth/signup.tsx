@@ -24,7 +24,7 @@ const SignUp = () => {
   });
 
   const dispatch = useDispatch();
-  const { loading, error, user } = useSelector(
+  const { loading, user } = useSelector(
     (state: RootState) => state.auth
   );
   const navigate = useNavigate();
