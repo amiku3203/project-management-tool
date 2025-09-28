@@ -52,7 +52,7 @@ const Login = () => {
 
         const updatedUser: User = { ...userData, token };
         dispatch(loginSuccess(updatedUser));
-        toast.success("Login SuccessFully")
+        toast.success("Login SuccessFully ! Welcome back.")
         const from = (location.state as any)?.from?.pathname || "/dashboard";
         navigate(from, { replace: true });
       } catch (err: any) {
@@ -60,7 +60,7 @@ const Login = () => {
         const errorMessage =
           err?.response?.data?.message || err?.message || "Login failed";
         dispatch(loginFailure(errorMessage));
-        toast.error("Login SuccessFully")
+        toast.error(errorMessage)
       }
     },
     [dispatch, navigate, location]

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+  import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../../redux/store";
@@ -96,6 +96,7 @@ const ProjectDetails: React.FC = () => {
             status: filter === "all" ? undefined : filter,
           })
         );
+        toast.success("Task status updated successfully!");
       } catch (error) {
         toast.error("Failed to update task status");
       }
@@ -104,44 +105,54 @@ const ProjectDetails: React.FC = () => {
 
   const handleDeleteTask = async (taskId: string) => {
     if (id && window.confirm("Are you sure you want to delete this task?")) {
-      await dispatch(deleteTask({ projectId: id, taskId }));
+      try {
+        await dispatch(deleteTask({ projectId: id, taskId }));
+        toast.success("Task deleted successfully!");
 
-      dispatch(fetchTasks({ projectId: id, status: undefined })).then(
-        (result: any) => {
-          if (result.payload) {
-            setAllTasks(result.payload);
+        dispatch(fetchTasks({ projectId: id, status: undefined })).then(
+          (result: any) => {
+            if (result.payload) {
+              setAllTasks(result.payload);
+            }
           }
-        }
-      );
+        );
 
-      dispatch(
-        fetchTasks({
-          projectId: id,
-          status: filter === "all" ? undefined : filter,
-        })
-      );
+        dispatch(
+          fetchTasks({
+            projectId: id,
+            status: filter === "all" ? undefined : filter,
+          })
+        );
+      } catch (error: any) {
+        toast.error("Failed to delete task. Please try again.");
+      }
     }
   };
 
   const handleCreateTask = async (data: TaskFormData) => {
     if (id) {
-      await dispatch(createTask({ projectId: id, taskData: data }));
-      setShowCreateTaskModal(false);
+      try {
+        await dispatch(createTask({ projectId: id, taskData: data }));
+        toast.success("Task created successfully!");
+        setShowCreateTaskModal(false);
 
-      dispatch(fetchTasks({ projectId: id, status: undefined })).then(
-        (result: any) => {
-          if (result.payload) {
-            setAllTasks(result.payload);
+        dispatch(fetchTasks({ projectId: id, status: undefined })).then(
+          (result: any) => {
+            if (result.payload) {
+              setAllTasks(result.payload);
+            }
           }
-        }
-      );
+        );
 
-      dispatch(
-        fetchTasks({
-          projectId: id,
-          status: filter === "all" ? undefined : filter,
-        })
-      );
+        dispatch(
+          fetchTasks({
+            projectId: id,
+            status: filter === "all" ? undefined : filter,
+          })
+        );
+      } catch (error: any) {
+        toast.error("Failed to create task. Please try again.");
+      }
     }
   };
 

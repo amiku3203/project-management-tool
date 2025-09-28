@@ -46,13 +46,13 @@ const SignUp = () => {
           user: User;
           token: string;
         }>("/auth/register", data);
-        toast.success("Signup Successfully!")
+        toast.success("Account created succefully !Please login.")
         dispatch(signupSuccess());
       
         navigate("/login");
       } catch (err: any) {
         dispatch(signupFailure(err.message || "Signup failed"));
-        toast.error("Signup Failed");
+        toast.error(err.message ||"Signup Failed");
       }
     },
     [dispatch, navigate, location]

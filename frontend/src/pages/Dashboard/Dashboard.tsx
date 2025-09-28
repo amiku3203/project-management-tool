@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { RootState, AppDispatch } from "../../redux/store";
@@ -11,6 +11,7 @@ import {
 } from "../../redux/slices/projectSlice";
 import type { Project, ProjectFormData } from "../../types";
 import ProjectForm from "../../components/ProjectForm";
+import toast from "react-hot-toast";
 
 const Dashboard: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
@@ -58,6 +59,7 @@ const Dashboard: React.FC = () => {
       setDeletingProjectId(projectId);
       try {
         await dispatch(deleteProject(projectId));
+        toast.success("Project deleted successfully!");
 
         // If we're on the last page and it only has 1 item, go to previous page
         const shouldGoToPreviousPage =
@@ -77,6 +79,8 @@ const Dashboard: React.FC = () => {
             search: searchQuery,
           })
         );
+      } catch (error: any) {
+        toast.error("Failed to delete project. Please try again.");
       } finally {
         setDeletingProjectId(null);
       }
@@ -84,10 +88,15 @@ const Dashboard: React.FC = () => {
   };
 
   const handleCreateProject = async (data: ProjectFormData) => {
-    await dispatch(createProject(data));
-    setShowCreateModal(false);
-    // Refresh the projects list
-    dispatch(fetchProjects({ page: 1, limit: 6, search: searchQuery }));
+    try {
+      await dispatch(createProject(data));
+      toast.success("Project created successfully!");
+      setShowCreateModal(false);
+      // Refresh the projects list
+      dispatch(fetchProjects({ page: 1, limit: 6, search: searchQuery }));
+    } catch (error: any) {
+      toast.error("Failed to create project. Please try again.");
+    }
   };
 
   const getStatusBadgeColor = (status: string) => {

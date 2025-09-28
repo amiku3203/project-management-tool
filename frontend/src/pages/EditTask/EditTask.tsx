@@ -1,4 +1,4 @@
- import React, { useEffect, useState } from "react";
+   import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../../redux/store";
@@ -8,6 +8,7 @@ import { updateTask } from "../../redux/slices/taskSlice";
 import type { TaskFormData, Task } from "../../types";
 import TaskForm from "../../components/TaskForm";
 import { taskService } from "../../services/taskServices";
+import toast from "react-hot-toast";
 
 const EditTask: React.FC = () => {
   const { projectId, taskId } = useParams<{ projectId: string; taskId: string }>();
@@ -47,9 +48,11 @@ const EditTask: React.FC = () => {
       setIsSubmitting(true);
       try {
         await dispatch(updateTask({ projectId, taskId, taskData: data }));
+        toast.success("Task updated successfully!");
         navigate(`/projects/${projectId}`);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to update task:', error);
+        toast.error("Failed to update task. Please try again.");
       } finally {
         setIsSubmitting(false);
       }

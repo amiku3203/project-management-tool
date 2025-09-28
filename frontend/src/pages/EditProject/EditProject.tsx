@@ -1,10 +1,11 @@
- import React, { useEffect, useState } from "react";
+   import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../../redux/store";
 import { fetchProject, updateProject } from "../../redux/slices/projectSlice";
 import type { ProjectFormData } from "../../types";
 import ProjectForm from "../../components/ProjectForm";
+import toast from "react-hot-toast";
 
 const EditProject: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,9 +26,11 @@ const EditProject: React.FC = () => {
       setIsSubmitting(true);
       try {
         await dispatch(updateProject({ id, projectData: data }));
+        toast.success("Project updated successfully!");
         navigate(`/projects/${id}`);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to update project:', error);
+        toast.error("Failed to update project. Please try again.");
       } finally {
         setIsSubmitting(false);
       }
