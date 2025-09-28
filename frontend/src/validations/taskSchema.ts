@@ -1,4 +1,4 @@
- import * as yup from "yup";
+   import * as yup from "yup";
 
 export const taskSchema = yup.object({
   title: yup
@@ -16,7 +16,13 @@ export const taskSchema = yup.object({
     .oneOf(['to-do', 'in-progress', 'done'], "Invalid status")
     .required("Status is required"),
   dueDate: yup
-    .date()
-    .min(new Date(new Date().setHours(0, 0, 0, 0)), "Due date cannot be in the past")
+    .string()
+    .test('is-future-date', 'Due date cannot be in the past', function(value) {
+      if (!value) return false;
+      const selectedDate = new Date(value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return selectedDate >= today;
+    })
     .required("Due date is required"),
 });

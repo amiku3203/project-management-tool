@@ -47,7 +47,7 @@ const taskSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    setFilter: (state, action: PayloadAction<'all' | 'todo' | 'in-progress' | 'done'>) => {
+    setFilter: (state, action: PayloadAction<'all' | 'to-do' | 'in-progress' | 'done'>) => {
       state.filter = action.payload;
     },
     clearTasks: (state) => {

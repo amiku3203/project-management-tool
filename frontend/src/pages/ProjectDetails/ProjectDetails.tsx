@@ -1,4 +1,4 @@
-  import React, { useEffect, useState } from "react";
+   import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState, AppDispatch } from "../../redux/store";
@@ -74,7 +74,7 @@ const ProjectDetails: React.FC = () => {
           newStatus,
           projectId: id,
         });
-        const result = await dispatch(
+        await dispatch(
           updateTask({
             projectId: id,
             taskId,
@@ -156,18 +156,6 @@ const ProjectDetails: React.FC = () => {
     }
   };
 
-  const getStatusBadgeColor = (status: string) => {
-    switch (status) {
-      case "to-do":
-        return "bg-gray-100 text-gray-800";
-      case "in-progress":
-        return "bg-yellow-100 text-yellow-800";
-      case "done":
-        return "bg-green-100 text-green-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
 
   const getPriorityColor = (dueDate: string) => {
     const due = new Date(dueDate);

@@ -33,7 +33,7 @@ export interface Task {
   _id: string;
   title: string;
   description: string;
-  status: "todo" | "in-progress" | "done";
+  status: "to-do" | "in-progress" | "done";
   dueDate: string;
   projectId: string;
   createdAt: string;
@@ -71,5 +71,5 @@ export interface TasksState {
   tasks: Task[];
   loading: boolean;
   error: string | null;
-  filter: "all" | "todo" | "in-progress" | "done";
+  filter: "all" | "to-do" | "in-progress" | "done";
 }
