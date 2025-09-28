@@ -24,7 +24,7 @@ const Login = () => {
   });
 
   const dispatch = useDispatch();
-  const { loading, error, user } = useSelector(
+  const { loading,  user } = useSelector(
     (state: RootState) => state.auth
   );
   const navigate = useNavigate();
@@ -105,7 +105,7 @@ const Login = () => {
             )}
           </div>
 
-          {error && <p className="text-sm text-red-400 text-center">{error}</p>}
+           
           <button
             type="submit"
             disabled={loading}
