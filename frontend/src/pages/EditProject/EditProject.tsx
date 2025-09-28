@@ -96,7 +96,7 @@ console.log("Curren ",currentProject);
             initialData={{
               title: currentProject.title,
               description: currentProject.description,
-              status: currentProject?.status,
+             status: currentProject?.status === "active" ? "Active" : currentProject?.status === "completed" ? "Completed" : "Active",
             }}
             onSubmit={handleUpdateProject}
             onCancel={handleCancel}

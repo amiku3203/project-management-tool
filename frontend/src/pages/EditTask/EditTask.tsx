@@ -16,7 +16,7 @@ const EditTask: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   
   const { currentProject, loading: projectLoading } = useSelector((state: RootState) => state.projects);
-  const { loading: taskLoading } = useSelector((state: RootState) => state.tasks);
+ 
   
   const [task, setTask] = useState<Task | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
