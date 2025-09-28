@@ -74,7 +74,7 @@ const SignUp = () => {
             <input
               type="text"
               {...register("name")}
-              className="w-full px-3 py-2 border-2 border-white rounded-md focus:outline-none focus:border-white-400  font-semibold placehold bg-white text-gray-500er-gray-400"
+              className="w-full px-3 py-2 border-2 border-white rounded-md focus:outline-none focus:border-white-400  font-semibold placeholder-gray-400 bg-white text-gray-500er-gray-400"
               placeholder="Enter your  name"
             />
             {errors.name && (
@@ -110,17 +110,17 @@ const SignUp = () => {
           </div>
 
           {error && <p className="text-sm text-red-400 text-center">{error}</p>}
-          {loading ? (
-            <p className="text-center text-white-200">Loading...</p>
-          ) : (
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2 cursor-pointer px-4 bg-white-600 border border-white-300 text-white font-semibold rounded-md hover:bg-white-700 focus:outline-none focus:ring-2 focus:ring-white-400 focus:ring-offset-2 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "Processing..." : "Signup"}
-            </button>
-          )}
+          <button
+  type="submit"
+  disabled={loading}
+  className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-white-600 border border-white-300 text-white font-semibold rounded-md hover:bg-white-700 focus:outline-none focus:ring-2 focus:ring-white-400 focus:ring-offset-2 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+>
+  {loading && (
+    <span className="inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin flex-shrink-0"></span>
+  )}
+  <span>{loading ? "Processing..." : "Signup"}</span>
+</button>
+
         </form>
 
         <p className="mt-4 text-center text-sm sm:text-base text-gray-300">

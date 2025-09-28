@@ -52,7 +52,7 @@ const Login = () => {
 
         const updatedUser: User = { ...userData, token };
         dispatch(loginSuccess(updatedUser));
-        toast.success("Login SuccessFully ! Welcome back.")
+        toast.success("Login SuccessFully ! Welcome back.");
         const from = (location.state as any)?.from?.pathname || "/dashboard";
         navigate(from, { replace: true });
       } catch (err: any) {
@@ -60,7 +60,7 @@ const Login = () => {
         const errorMessage =
           err?.response?.data?.message || err?.message || "Login failed";
         dispatch(loginFailure(errorMessage));
-        toast.error(errorMessage)
+        toast.error(errorMessage);
       }
     },
     [dispatch, navigate, location]
@@ -106,17 +106,16 @@ const Login = () => {
           </div>
 
           {error && <p className="text-sm text-red-400 text-center">{error}</p>}
-          {loading ? (
-            <p className="text-center text-white-200">Loading...</p>
-          ) : (
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-2 px-4 bg-white-600 border border-white-300 text-white font-semibold rounded-md hover:bg-white-700 focus:outline-none focus:ring-2 focus:ring-white-400 focus:ring-offset-2 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "Logging in..." : "Login"}
-            </button>
-          )}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-gray-700 border border-gray-300 text-white font-semibold rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading && (
+              <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+            )}
+            {loading ? "Logging in..." : "Login"}
+          </button>
         </form>
 
         <p className="mt-4 text-center text-sm sm:text-base text-gray-300">
