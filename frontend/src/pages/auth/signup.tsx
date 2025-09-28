@@ -41,11 +41,12 @@ const SignUp = () => {
     async (data: SignupFormData) => {
       dispatch(signupRequest());
       try {
-        const response = await axiosInstance.post<{
+        await axiosInstance.post<{
           message: string;
           user: User;
           token: string;
         }>("/auth/register", data);
+        
         toast.success("Account created succefully !Please login.")
         dispatch(signupSuccess());
       

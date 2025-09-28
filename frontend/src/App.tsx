@@ -1,6 +1,5 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import type { RootState } from "./redux/store";
+import { Routes, Route } from "react-router-dom";
+
 import Login from "./pages/auth/login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ProjectDetails from "./pages/ProjectDetails/ProjectDetails";
@@ -10,8 +9,6 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import SignUp from "./pages/auth/signup";
 
 const App = () => {
-  const { user } = useSelector((state: RootState) => state.auth);
-
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
