@@ -4,7 +4,7 @@ A full-stack project management application built with React, TypeScript, Node.j
 
 ## Live Demo
 
-Frontend: https://project-management-tool-dev.vercel.app/
+https://project-management-tool-dev.vercel.app/
 
 ## Features
 
